@@ -1,0 +1,9 @@
+.git
+.gradle
+.settings
+bin
+build
+.classpath
+.project
+gradlew
+gradlew.bat
