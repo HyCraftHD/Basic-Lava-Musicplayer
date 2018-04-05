@@ -12,4 +12,4 @@ dependencies {
     compile 'com.sedmelluq:lavaplayer:1.2.62'
 }
 
-mainClassName = 'net.hycrafthd.basiclavamusicplayer.Main'
+mainClassName = 'net.hycrafthd.basiclavamusicplayer.testimpl.Main'
