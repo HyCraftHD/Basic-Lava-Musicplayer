@@ -6,6 +6,13 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 
 import net.hycrafthd.basiclavamusicplayer.MusicPlayer;
+import net.hycrafthd.basiclavamusicplayer.event.MusicEventSubscriber;
+import net.hycrafthd.basiclavamusicplayer.event.MusicPlayerEventBus;
+import net.hycrafthd.basiclavamusicplayer.event.events.EventPlay;
+import net.hycrafthd.basiclavamusicplayer.event.events.EventQueue.EventQueueFailed;
+import net.hycrafthd.basiclavamusicplayer.event.events.EventQueue.EventQueuePlayList;
+import net.hycrafthd.basiclavamusicplayer.event.events.EventQueue.EventQueueTrack;
+import net.hycrafthd.basiclavamusicplayer.event.events.EventStop;
 
 public class Main {
 	
@@ -23,17 +30,17 @@ public class Main {
 			while (scanner.hasNext()) {
 				String line = scanner.nextLine();
 				if (line.startsWith("pause")) {
-					musicplayer.setPause();
-					System.out.println("Pause");
+					musicplayer.getTrackScheduler().setPaused(true);
 				} else if (line.startsWith("unpause")) {
-					musicplayer.setUnpause();
-					System.out.println("Unpause");
+					musicplayer.getTrackScheduler().setPaused(false);
 				} else if (line.startsWith("play ")) {
-					musicplayer.play(line.substring(5), (callback) -> System.out.println(callback));
+					musicplayer.getTrackScheduler().play(line.substring(5));
 				} else if (line.startsWith("queue ")) {
-					musicplayer.queue(line.substring(6), (callback) -> System.out.println(callback));
+					musicplayer.getTrackScheduler().queue(line.substring(6));
 				} else if (line.startsWith("repeat")) {
-					System.out.println("Repeat: " + musicplayer.toggleRepeat());
+					musicplayer.getTrackScheduler().setRepeat(!musicplayer.getTrackScheduler().isRepeat());
+				} else if (line.startsWith("shuffle")) {
+					musicplayer.getTrackScheduler().setShuffle(!musicplayer.getTrackScheduler().isShuffle());
 				} else if (line.startsWith("volume ")) {
 					int volume = -1;
 					try {
@@ -53,11 +60,41 @@ public class Main {
 						System.out.println(getTrackInfo(tracks.getInfo()));
 					}
 				} else if (line.startsWith("skip")) {
-					musicplayer.skip();
+					musicplayer.getTrackScheduler().skip();
+				} else if (line.startsWith("mix")) {
+					musicplayer.getTrackScheduler().mix();
 				}
 			}
 		}).start();
 		
+		MusicPlayerEventBus.register(this);
+		
+	}
+	
+	@MusicEventSubscriber
+	public void on(EventStop event) {
+		System.out.println("Player stopped");
+	}
+	
+	@MusicEventSubscriber
+	public void on(EventPlay event) {
+		System.out.println("Playing now: " + getTrackInfo(event.getTrack().getInfo()));
+	}
+	
+	@MusicEventSubscriber
+	public void on(EventQueueFailed event) {
+		System.out.println(event.getError());
+		event.getException().printStackTrace();
+	}
+	
+	@MusicEventSubscriber
+	public void on(EventQueueTrack event) {
+		System.out.println("Queued Track: " + getTrackInfo(event.getTrack().getInfo()) + " with state " + event.getState());
+	}
+	
+	@MusicEventSubscriber
+	public void on(EventQueuePlayList event) {
+		System.out.println("Queued Playlist: " + event.getPlayList().getName() + " with state " + event.getState());
 	}
 	
 	protected String getTrackInfo(AudioTrackInfo info) {
