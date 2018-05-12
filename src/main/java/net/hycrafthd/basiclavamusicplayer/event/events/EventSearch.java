@@ -4,13 +4,13 @@ import com.sedmelluq.discord.lavaplayer.track.*;
 
 import net.hycrafthd.basiclavamusicplayer.event.MusicPlayerEvent;
 
-public abstract class EventQueue implements MusicPlayerEvent {
+public abstract class EventSearch implements MusicPlayerEvent {
 	
-	public static class EventQueueSuccess extends EventQueue {
+	public static class EventSearchSuccess extends EventSearch {
 		
 		private final State state;
 		
-		public EventQueueSuccess(State state) {
+		public EventSearchSuccess(State state) {
 			this.state = state;
 		}
 		
@@ -24,11 +24,11 @@ public abstract class EventQueue implements MusicPlayerEvent {
 		}
 	}
 	
-	public static class EventQueueTrack extends EventQueueSuccess {
+	public static class EventSearchTrack extends EventSearchSuccess {
 		
 		private final AudioTrack track;
 		
-		public EventQueueTrack(State state, AudioTrack track) {
+		public EventSearchTrack(State state, AudioTrack track) {
 			super(state);
 			this.track = track;
 		}
@@ -39,11 +39,11 @@ public abstract class EventQueue implements MusicPlayerEvent {
 		
 	}
 	
-	public static class EventQueuePlayList extends EventQueueSuccess {
+	public static class EventSearchPlayList extends EventSearchSuccess {
 		
 		private final AudioPlaylist playlist;
 		
-		public EventQueuePlayList(State state, AudioPlaylist playlist) {
+		public EventSearchPlayList(State state, AudioPlaylist playlist) {
 			super(state);
 			this.playlist = playlist;
 		}
@@ -53,12 +53,12 @@ public abstract class EventQueue implements MusicPlayerEvent {
 		}
 	}
 	
-	public static class EventQueueFailed extends EventQueue {
+	public static class EventSearchFailed extends EventSearch {
 		
 		private final String error;
 		private final Exception exception;
 		
-		public EventQueueFailed(String error, Exception exception) {
+		public EventSearchFailed(String error, Exception exception) {
 			this.error = error;
 			this.exception = exception;
 		}

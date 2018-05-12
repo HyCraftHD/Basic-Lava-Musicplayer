@@ -9,9 +9,9 @@ import net.hycrafthd.basiclavamusicplayer.MusicPlayer;
 import net.hycrafthd.basiclavamusicplayer.event.MusicEventSubscriber;
 import net.hycrafthd.basiclavamusicplayer.event.MusicPlayerEventBus;
 import net.hycrafthd.basiclavamusicplayer.event.events.EventPlay;
-import net.hycrafthd.basiclavamusicplayer.event.events.EventQueue.EventQueueFailed;
-import net.hycrafthd.basiclavamusicplayer.event.events.EventQueue.EventQueuePlayList;
-import net.hycrafthd.basiclavamusicplayer.event.events.EventQueue.EventQueueTrack;
+import net.hycrafthd.basiclavamusicplayer.event.events.EventSearch.EventSearchFailed;
+import net.hycrafthd.basiclavamusicplayer.event.events.EventSearch.EventSearchPlayList;
+import net.hycrafthd.basiclavamusicplayer.event.events.EventSearch.EventSearchTrack;
 import net.hycrafthd.basiclavamusicplayer.event.events.EventStop;
 
 public class Main {
@@ -34,9 +34,9 @@ public class Main {
 				} else if (line.startsWith("unpause")) {
 					musicplayer.getTrackScheduler().setPaused(false);
 				} else if (line.startsWith("play ")) {
-					musicplayer.getTrackScheduler().play(line.substring(5));
+					musicplayer.getTrackSearch().play(line.substring(5));
 				} else if (line.startsWith("queue ")) {
-					musicplayer.getTrackScheduler().queue(line.substring(6));
+					musicplayer.getTrackSearch().queue(line.substring(6));
 				} else if (line.startsWith("repeat")) {
 					musicplayer.getTrackScheduler().setRepeat(!musicplayer.getTrackScheduler().isRepeat());
 				} else if (line.startsWith("shuffle")) {
@@ -82,18 +82,18 @@ public class Main {
 	}
 	
 	@MusicEventSubscriber
-	public void on(EventQueueFailed event) {
+	public void on(EventSearchFailed event) {
 		System.out.println(event.getError());
 		event.getException().printStackTrace();
 	}
 	
 	@MusicEventSubscriber
-	public void on(EventQueueTrack event) {
+	public void on(EventSearchTrack event) {
 		System.out.println("Queued Track: " + getTrackInfo(event.getTrack().getInfo()) + " with state " + event.getState());
 	}
 	
 	@MusicEventSubscriber
-	public void on(EventQueuePlayList event) {
+	public void on(EventSearchPlayList event) {
 		System.out.println("Queued Playlist: " + event.getPlayList().getName() + " with state " + event.getState());
 	}
 	

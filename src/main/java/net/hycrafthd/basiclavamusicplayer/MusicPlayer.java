@@ -8,6 +8,7 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 
 import net.hycrafthd.basiclavamusicplayer.output.AudioOutput;
 import net.hycrafthd.basiclavamusicplayer.queue.TrackScheduler;
+import net.hycrafthd.basiclavamusicplayer.search.TrackSearch;
 
 public class MusicPlayer {
 	
@@ -15,14 +16,18 @@ public class MusicPlayer {
 	private AudioDataFormat audiodataformat;
 	private AudioPlayer audioplayer;
 	private AudioOutput audiooutput;
+	
 	private TrackScheduler trackscheduler;
+	private TrackSearch tracksearch;
 	
 	public MusicPlayer() {
 		audioplayermanager = new DefaultAudioPlayerManager();
 		audiodataformat = new AudioDataFormat(2, 48000, 960, Codec.PCM_S16_LE);
 		audioplayer = audioplayermanager.createPlayer();
 		audiooutput = new AudioOutput(this);
-		trackscheduler = new TrackScheduler(audioplayermanager, audioplayer);
+		
+		trackscheduler = new TrackScheduler(audioplayer);
+		tracksearch = new TrackSearch(audioplayermanager, trackscheduler);
 		
 		setup();
 	}
@@ -57,11 +62,19 @@ public class MusicPlayer {
 		return trackscheduler;
 	}
 	
+	public TrackSearch getTrackSearch() {
+		return tracksearch;
+	}
+	
 	public void startAudioOutput() {
 		audiooutput.start();
 	}
 	
 	public void setVolume(int volume) {
 		audioplayer.setVolume(volume);
+	}
+	
+	public int getVolume() {
+		return audioplayer.getVolume();
 	}
 }

@@ -1,8 +1,7 @@
 package net.hycrafthd.basiclavamusicplayer.event;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Enumeration;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MusicPlayerEventBus {
@@ -28,9 +27,7 @@ public class MusicPlayerEventBus {
 	}
 	
 	public static void unregister(Object obj) {
-		if (listenerlist.containsKey(obj)) {
-			listenerlist.remove(obj);
-		}
+		listenerlist.remove(obj);
 	}
 	
 	public static void post(MusicPlayerEvent event) {
@@ -39,11 +36,10 @@ public class MusicPlayerEventBus {
 			Object obj = enumeration.nextElement();
 			for (Method method : listenerlist.get(obj)) {
 				method.setAccessible(true);
-				if (method.getParameters()[0].getType().equals(event.getClass())) {
+				if (method.getParameters()[0].getType().equals(event.getClass()) || method.getParameters()[0].getType().isAssignableFrom(event.getClass())) {
 					try {
 						method.invoke(obj, event);
 					} catch (Exception ex) {
-						System.out.println("Failed posting event " + event + " to method " + method);
 						ex.printStackTrace();
 					}
 				}
