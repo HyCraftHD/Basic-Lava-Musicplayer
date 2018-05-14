@@ -4,7 +4,7 @@ This is a basic implemention of https://github.com/sedmelluq/lavaplayer for dire
 
 You can use maven or gradle to include this libary to your repository.
 
-* Repository: jcenter
+* Repository: github and jcenter
 * Artifact: **net.hycrafthd:basiclavamusicplayer:1.0.0**
 
 Using in Gradle:
