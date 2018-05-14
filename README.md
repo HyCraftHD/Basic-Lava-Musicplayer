@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-  compile 'com.sedmelluq:lavaplayer:x.y.z'
+  compile 'net.hycrafthd:basiclavamusicplayer:1.0.0'
 }
 ```
 
@@ -36,8 +36,8 @@ Using in Maven:
 
 <dependencies>
   <dependency>
-    <groupId>com.sedmelluq</groupId>
-    <artifactId>lavaplayer</artifactId>
+    <groupId>net.hycrafthd</groupId>
+    <artifactId>basiclavamusicplayer</artifactId>
     <version>1.0.0</version>
   </dependency>
 </dependencies>
