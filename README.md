@@ -28,7 +28,7 @@ Using in Maven:
     <url>http://jcenter.bintray.com</url>
   </repository>
   <repository>
-    <id>central</id>
+    <id>github</id>
     <name>github-hycrafthd</name>
     <url>https://raw.githubusercontent.com/HyCraftHD/Basic-Lava-Musicplayer/master/maven</url>
   </repository>
